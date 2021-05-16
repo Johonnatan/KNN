@@ -12,7 +12,7 @@ library(caret)
 #Carrega o conjunto de dados PimaIndiansDiabetes na memoria do R
 data(PimaIndiansDiabetes)
 
-#Armazena o conjunto de dados PimaIndiansDiabetes em um data frame com o nome dados
+#Armazena o conjunto de dados PimaIndiansDiabetes em um data frame
 dataframe <- PimaIndiansDiabetes
 
 #visualiza as estatisticas descritivas das variaveis do conjunto de dados
@@ -24,7 +24,7 @@ conjunto <- createDataPartition(dataframe$diabetes, #Variavel resposta do conjun
                                 list = F #Manter lista
 )
 
-#
+#Separa a base de treino e teste
 base_treino <- dataframe[conjunto,]
 base_teste <- dataframe[-conjunto,]
 
