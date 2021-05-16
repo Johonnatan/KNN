@@ -28,7 +28,7 @@ conjunto <- createDataPartition(dataframe$diabetes, #Variavel resposta do conjun
 base_treino <- dataframe[conjunto,]
 base_teste <- dataframe[-conjunto,]
 
-#Planta a seamente
+#Planta a semente
 set.seed(1)
 
 #Treina KNN com normalizacao min-max aplicada aos dados
