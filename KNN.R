@@ -4,14 +4,10 @@ rm(list=ls(all=TRUE))
 #Instala bibliotecas
 install.packages('mlbench') #biblioteca com conjunto de dados Pima Indians Diabetes
 install.packages('caret',dependencies = TRUE) #biblioteca para trabalhar com machine learning
-install.packages('rpart') #rpart traz o algoritmo decision tree
-install.packages('rpart.plot') #visualizar a arvore de decisao
 
 #Carrega as bibliotecas
 library(mlbench)
 library(caret)
-library(rpart)
-library(rpart.plot)
 
 #Carrega o conjunto de dados PimaIndiansDiabetes na memoria do R
 data(PimaIndiansDiabetes)
