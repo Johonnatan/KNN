@@ -29,36 +29,55 @@ index <- createDataPartition(dados$diabetes, #Variavel resposta
 treino <- dados[index,]
 teste <- dados[-index,]
 
-####--- Treina KNN com normalizacao min-max
+#Remove objetos da memória do R
+rm(list=ls(all=TRUE))
+
+#Instala bibliotecas
+install.packages('mlbench') #biblioteca com conjunto de dados Pima Indians Diabetes
+install.packages('caret',dependencies = TRUE) #biblioteca para trabalhar com machine learning
+install.packages('rpart') #rpart traz o algoritmo decision tree
+install.packages('rpart.plot') #visualizar a arvore de decisao
+
+#Carrega as bibliotecas
+library(mlbench)
+library(caret)
+library(rpart)
+library(rpart.plot)
+
+#Carrega o conjunto de dados PimaIndiansDiabetes na memoria do R
+data(PimaIndiansDiabetes)
+
+#Armazena o conjunto de dados PimaIndiansDiabetes em um data frame com o nome dados
+dataframe <- PimaIndiansDiabetes
+
+#visualiza as estatisticas descritivas das variaveis do conjunto de dados
+summary(dataframe)
+
+#Separa conjunto de dados para treino e teste no método de hold-out
+conjunto <- createDataPartition(dataframe$diabetes, #Variavel resposta do conjunto de dados
+                                p = 0.8, #Definir percentual para treino em 80%
+                                list = F #Manter lista
+)
+
+#
+base_treino <- dataframe[conjunto,]
+base_teste <- dataframe[-conjunto,]
+
+#Planta a seamente
 set.seed(1)
 
-knn_model_minmax <- train(diabetes ~.,
-                          data = treino,
+#Treina KNN com normalizacao min-max aplicada aos dados
+knn_minmax <- train(diabetes ~.,
+                          data = base_treino,
                           method = 'knn',
-                          preProcess = c('range')) #normalizacao min-max
+                          preProcess = c('range'))
 
-knn_model_minmax #Visualiza resumo do treinamento
+#Visualiza resumo do treinamento
+knn_minmax 
 
-#A partir do algoritmo treinado, faz predicao nos dados separados para teste
-predicoes_knn_minmax <- predict(knn_model_minmax, newdata = teste)
+#Realiza predição nos dados separados para teste
+predicoes <- predict(knn_minmax, newdata = base_teste)
 
-confusionMatrix(predicoes_knn_minmax,
-                teste$diabetes,
-                positive = 'pos')
-
-####--- Treina KNN com padronizacao z-score
-set.seed(1)
-
-knn_model_zscore <- train(diabetes ~.,
-                          data = treino,
-                          method = 'knn',
-                          preProcess = c('center','scale')) #padronizacao z-score
-
-knn_model_zscore #Visualiza resumo do treinamento
-
-#A partir do algoritmo treinado, faz predicao nos dados separados para teste
-predicoes_knn_z <- predict(knn_model_zscore, newdata = teste)
-
-confusionMatrix(predicoes_knn_z,
-                teste$diabetes,
+confusionMatrix(predicoes,
+                base_teste$diabetes,
                 positive = 'pos')
